@@ -1,39 +1,91 @@
 /*
 Theme Name: GIFTON
-Theme URI: http://example.com
 Author: GIFTON Team
-Author URI: http://example.com
 Description: A custom theme for WordPress.
 Version: 1.0
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Text Domain: GIFTON-Toolkit
 */
 
 body {
     font-family: Arial, sans-serif;
-    line-height: 1.6;
     margin: 0;
     padding: 0;
+    color: #333;
 }
 
-header {
-    background: #333;
-    color: #fff;
-    padding: 1em;
+.hero-section {
     text-align: center;
+    padding: 4em 1em;
+    background: #4A90E2;
+    color: white;
 }
 
-h1 {
+.hero-section h1 {
+    font-size: 3em;
     margin: 0;
 }
 
-footer {
-    background: #333;
-    color: #fff;
+.hero-section p {
+    font-size: 1.2em;
+    margin-top: 0.5em;
+}
+
+.btn-primary {
+    background: #FFC107;
+    color: #333;
+    padding: 0.8em 1.5em;
+    text-decoration: none;
+    border-radius: 5px;
+    display: inline-block;
+    margin-top: 1.5em;
+}
+
+.features-section {
+    padding: 4em 1em;
+    background: #f9f9f9;
     text-align: center;
+}
+
+.features-section h2 {
+    font-size: 2.5em;
+    margin-bottom: 1em;
+}
+
+.feature {
+    display: inline-block;
+    width: 30%;
+    margin: 1em;
     padding: 1em;
-    position: fixed;
-    width: 100%;
-    bottom: 0;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.feature h3 {
+    font-size: 1.5em;
+    color: #4A90E2;
+}
+
+/* Call to Action Section */
+.cta-section {
+    text-align: center;
+    padding: 3em 1em;
+    background: #333;
+    color: white;
+}
+
+.cta-section h2 {
+    font-size: 2.5em;
+    margin: 0.5em 0;
+}
+
+.btn-secondary {
+    background: #4A90E2;
+    color: white;
+    padding: 0.8em 1.5em;
+    text-decoration: none;
+    border-radius: 5px;
+    display: inline-block;
+    margin-top: 1em;
 }

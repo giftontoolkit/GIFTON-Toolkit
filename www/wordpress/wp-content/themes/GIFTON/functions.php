@@ -1,14 +1,11 @@
 <?php
-// Register a navigation menu
-function my_custom_theme_setup() {
-    register_nav_menus(array(
-        'primary' => __('Primary Menu', 'my-custom-theme'),
-    ));
+// Enqueue styles and scripts
+function gifton_enqueue_scripts() {
+    // Enqueue main stylesheet
+    wp_enqueue_style('gifton-style', get_stylesheet_uri());
 
-    // Add support for featured images
-    add_theme_support('post-thumbnails');
-    
-    // Add support for document title tag
-    add_theme_support('title-tag');
+    // Enqueue custom JavaScript file
+    wp_enqueue_script('gifton-scripts', get_template_directory_uri() . '/js/scripts.js', array(), null, true);
 }
-add_action('after_setup_theme', 'my_custom_theme_setup');
+add_action('wp_enqueue_scripts', 'gifton_enqueue_scripts');
+?>
