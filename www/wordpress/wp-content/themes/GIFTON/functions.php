@@ -1,39 +1,70 @@
 <?php
-function gifton_enqueue_scripts() {
-    // Enqueue main stylesheet
+// Theme Setup
+function gifton_theme_setup() {
+    // Enable support for custom logo
+    add_theme_support('custom-logo');
+
+    // Enable support for post thumbnails
+    add_theme_support('post-thumbnails');
+
+    // Register navigation menu
+    register_nav_menus(array(
+        'primary' => __('Primary Menu', 'gifton-theme')
+    ));
+
+    // Add support for title tag
+    add_theme_support('title-tag');
+}
+add_action('after_setup_theme', 'gifton_theme_setup');
+
+// Enqueue Styles and Inline JavaScript
+function gifton_enqueue_assets() {
+    // Enqueue style.css
     wp_enqueue_style('gifton-style', get_stylesheet_uri());
-}
-add_action('wp_enqueue_scripts', 'gifton_enqueue_scripts');
 
-function jscripts() {
-    echo '<script type = "text/JavaScript">
-        </script>';
+    // Inline JavaScript for smooth scrolling
+    wp_add_inline_script('jquery', "
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctaButton = document.querySelector('.cta-button');
+            if (ctaButton) {
+                ctaButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const featuresSection = document.querySelector('#features');
+                    if (featuresSection) {
+                        window.scrollTo({
+                            top: featuresSection.offsetTop,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            }
+        });
+    ");
 }
-jscripts();
+add_action('wp_enqueue_scripts', 'gifton_enqueue_assets');
 
-function custom_theme_customizer($wp_customize) {
-    // Add Section
-    $wp_customize->add_section('custom_theme_options', array(
-        'title'    => __('Custom Theme Options', 'textdomain'),
-        'priority' => 30,
+// Customize Footer Text via Customizer
+function gifton_customize_register($wp_customize) {
+    $wp_customize->add_section('gifton_footer_section', array(
+        'title' => __('Footer Customization', 'gifton-theme'),
+        'priority' => 120,
     ));
-    
-    // Add Setting
-    $wp_customize->add_setting('header_background_color', array(
-        'default'   => '#ffffff',
-        'transport' => 'refresh',
+
+    $wp_customize->add_setting('footer_text_setting', array(
+        'default' => 'GIFTON Toolkit. All rights reserved.',
+        'sanitize_callback' => 'sanitize_text_field',
     ));
-    
-    // Add Control
-    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'header_background_color_control', array(
-        'label'    => __('Header Background Color', 'textdomain'),
-        'section'  => 'custom_theme_options',
-        'settings' => 'header_background_color',
-    )));
+
+    $wp_customize->add_control('footer_text_control', array(
+        'label' => __('Footer Text', 'gifton-theme'),
+        'section' => 'gifton_footer_section',
+        'settings' => 'footer_text_setting',
+        'type' => 'text',
+    ));
 }
-add_action('customize_register', 'custom_theme_customizer');
+add_action('customize_register', 'gifton_customize_register');
 
-$header_color = get_theme_mod('header_background_color', '#ffffff');
-echo "<style>index { background-color: $header_color; }</style>";
-
-?>
+// Output Custom Footer Text
+function gifton_custom_footer_text() {
+    echo esc_html(get_theme_mod('footer_text_setting', 'GIFTON Toolkit. All rights reserved.'));
+}
