@@ -36,7 +36,7 @@
     </section>
 
     <footer class="landing-footer">
-    <p>&copy; <?php echo date('Y'); ?> <?php gifton_custom_footer_text(); ?></p>
+        <p>&copy; <?php echo date('Y'); ?> <?php gifton_custom_footer_text(); ?></p>
     </footer>
 
     <?php wp_footer(); ?>
