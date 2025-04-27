@@ -1,138 +1,241 @@
 <?php
-// Theme Setup
-function gifton_theme_setup() {
-    // Enable support for custom logo
-    add_theme_support('custom-logo');
+/**
+ * GIFTON Theme Functions
+ */
 
-    // Enable support for post thumbnails
-    add_theme_support('post-thumbnails');
+if ( ! function_exists( 'gifton_setup' ) ) :
+function gifton_setup() {
+    // Load theme textdomain
+    load_theme_textdomain( 'gifton', get_template_directory() . '/languages' );
 
-    // Register navigation menu
-    register_nav_menus(array(
-        'primary' => __('Primary Menu', 'gifton-theme')
-    ));
+    // Add default RSS feed links
+    add_theme_support( 'automatic-feed-links' );
 
-    // Add support for title tag
-    add_theme_support('title-tag');
+    // Let WordPress manage the document title
+    add_theme_support( 'title-tag' );
+
+    // Enable support for Post Thumbnails
+    add_theme_support( 'post-thumbnails' );
+
+    // WooCommerce support
+    add_theme_support( 'woocommerce' );
+
+    // Register menu
+    register_nav_menus( array(
+        'primary' => __( 'Primary Menu', 'gifton' ),
+    ) );
+
+    // Add support for custom logo
+    add_theme_support( 'custom-logo', array(
+        'height'      => 100,
+        'width'       => 300,
+        'flex-width'  => true,
+        'flex-height' => true,
+    ) );
+
+    // Custom background support
+    add_theme_support( 'custom-background', array(
+        'default-color' => 'ffffff',
+        'default-image' => '',
+    ) );
+
+    // Custom header image (optional)
+    add_theme_support( 'custom-header', array(
+        'width'  => 1920,
+        'height' => 400,
+        'flex-height' => true,
+        'flex-width'  => true,
+    ) );
+
+    add_theme_support( 'html5', array( 'search-form', 'comment-form', 'comment-list', 'gallery', 'caption', ) );
+    add_theme_support( 'customize-selective-refresh-widgets' );
+    
 }
-add_action('after_setup_theme', 'gifton_theme_setup');
+endif;
+add_action( 'after_setup_theme', 'gifton_setup' );
 
-// Enqueue Styles and Inline JavaScript
-function gifton_enqueue_assets() {
-    // Enqueue style.css
-    wp_enqueue_style('gifton-style', get_stylesheet_uri());
+/**
+ * Enqueue scripts and styles
+ */
+function gifton_scripts() {
+    // Main stylesheet
+    wp_enqueue_style( 'gifton-style', get_stylesheet_uri() );
 
-    // Inline JavaScript for smooth scrolling
-    wp_add_inline_script('jquery', "
-        document.addEventListener('DOMContentLoaded', function() {
-            const ctaButton = document.querySelector('.cta-button');
-            if (ctaButton) {
-                ctaButton.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const featuresSection = document.querySelector('#features');
-                    if (featuresSection) {
-                        window.scrollTo({
-                            top: featuresSection.offsetTop,
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            }
+    // Additional CSS
+    wp_enqueue_style( 'gifton-main', get_template_directory_uri() . '/assets/css/style.css' );
+
+    // Add Google Fonts (Roboto)
+    wp_enqueue_style( 'gifton-google-fonts', 'https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap', false );
+
+    // Inline JS for theme functions (no external js file)
+    wp_add_inline_script( 'jquery-core', '
+        jQuery(document).ready(function($) {
+            console.log("GIFTON Theme Loaded Successfully!");
         });
-    ");
+    ' );
 }
-add_action('wp_enqueue_scripts', 'gifton_enqueue_assets');
+add_action( 'wp_enqueue_scripts', 'gifton_scripts' );
 
-// Add Theme Customization Options
-function gifton_customize_register($wp_customize) {
-    // Footer Section
-    $wp_customize->add_section('gifton_footer_section', array(
-        'title' => __('Footer Customization', 'gifton-theme'),
-        'priority' => 120,
-    ));
-    $wp_customize->add_setting('footer_text_setting', array(
-        'default' => 'GIFTON Toolkit. All rights reserved.',
-        'sanitize_callback' => 'sanitize_text_field',
-    ));
-    $wp_customize->add_control('footer_text_control', array(
-        'label' => __('Footer Text', 'gifton-theme'),
-        'section' => 'gifton_footer_section',
-        'settings' => 'footer_text_setting',
-        'type' => 'text',
-    ));
+/**
+ * Theme Customizer Options
+ */
+function gifton_customize_register( $wp_customize ) {
 
-    // Color Customization
-    $wp_customize->add_setting('header_background_color', array(
-        'default' => '#2c3e50',
-        'sanitize_callback' => 'sanitize_hex_color',
-    ));
-    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'header_background_color', array(
-        'label' => __('Header Background Color', 'gifton-theme'),
-        'section' => 'colors',
-        'settings' => 'header_background_color',
-    )));
-
-    $wp_customize->add_setting('text_color', array(
-        'default' => '#ecf0f1',
-        'sanitize_callback' => 'sanitize_hex_color',
-    ));
-    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'text_color', array(
-        'label' => __('Text Color', 'gifton-theme'),
-        'section' => 'colors',
-        'settings' => 'text_color',
-    )));
-
-    // Background Image Customization (Custom Section)
-    $wp_customize->add_section('gifton_background_section', array(
-        'title' => __('Landing Page Background', 'gifton-theme'),
+    // === COLORS ===
+    $wp_customize->add_section( 'gifton_colors_section', array(
+        'title'    => __( 'Theme Colors', 'gifton' ),
         'priority' => 30,
-    ));
-    $wp_customize->add_setting('landing_bg_image', array(
-        'default' => '',
-        'sanitize_callback' => 'esc_url_raw',
-    ));
-    $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'landing_bg_image', array(
-        'label' => __('Landing Page Background Image', 'gifton-theme'),
-        'section' => 'gifton_background_section',
-        'settings' => 'landing_bg_image',
-    )));
+    ) );
 
-    // Typography Customization
-    $wp_customize->add_section('typography', array(
-        'title' => __('Typography', 'gifton-theme'),
+    $wp_customize->add_setting( 'gifton_primary_color', array(
+        'default'   => '#3a86ff', // Soft Blue
+        'transport' => 'refresh',
+        'sanitize_callback' => 'sanitize_hex_color',
+    ) );
+
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'gifton_primary_color', array(
+        'label'   => __( 'Primary Color', 'gifton' ),
+        'section' => 'gifton_colors_section',
+        'settings' => 'gifton_primary_color',
+    ) ) );
+
+    // === TYPOGRAPHY ===
+    $wp_customize->add_section( 'gifton_typography_section', array(
+        'title'    => __( 'Typography', 'gifton' ),
         'priority' => 40,
-    ));
-    $wp_customize->add_setting('header_font', array(
-        'default' => 'Arial, sans-serif',
+    ) );
+
+    $wp_customize->add_setting( 'gifton_font_family', array(
+        'default' => 'Roboto, sans-serif',
+        'transport' => 'refresh',
         'sanitize_callback' => 'sanitize_text_field',
-    ));
-    $wp_customize->add_control('header_font_control', array(
-        'label' => __('Header Font Family', 'gifton-theme'),
-        'section' => 'typography',
-        'settings' => 'header_font',
-        'type' => 'text',
-    ));
-}
-add_action('customize_register', 'gifton_customize_register');
+    ) );
 
-// Output Custom Footer Text
-function gifton_custom_footer_text() {
-    echo esc_html(get_theme_mod('footer_text_setting', 'GIFTON Toolkit. All rights reserved.'));
+    $wp_customize->add_control( 'gifton_font_family', array(
+        'label'    => __( 'Font Family', 'gifton' ),
+        'section'  => 'gifton_typography_section',
+        'settings' => 'gifton_font_family',
+        'type'     => 'text',
+        'description' => 'e.g., Roboto, Arial, sans-serif',
+    ) );
+
+    // === BACKGROUND IMAGE ===
+    $wp_customize->add_section( 'background_image', array(
+        'title' => __( 'Background Image', 'gifton' ),
+        'priority' => 50,
+    ) );
+    // (Built-in already, so just using WordPress native)
+
+    // === HEADER SETTINGS ===
+    $wp_customize->add_section( 'gifton_header_section', array(
+        'title'    => __( 'Header Settings', 'gifton' ),
+        'priority' => 60,
+    ) );
+
+    $wp_customize->add_setting( 'gifton_header_layout', array(
+        'default' => 'logo-left',
+        'transport' => 'refresh',
+        'sanitize_callback' => 'sanitize_text_field',
+    ) );
+
+    $wp_customize->add_control( 'gifton_header_layout', array(
+        'label'    => __( 'Header Layout', 'gifton' ),
+        'section'  => 'gifton_header_section',
+        'settings' => 'gifton_header_layout',
+        'type'     => 'select',
+        'choices'  => array(
+            'logo-left'   => 'Logo Left, Menu Right',
+            'centered'    => 'Centered Logo and Menu',
+        ),
+    ) );
+
+    // === BUTTON STYLE ===
+    $wp_customize->add_section( 'gifton_buttons_section', array(
+        'title'    => __( 'Button Styles', 'gifton' ),
+        'priority' => 70,
+    ) );
+
+    $wp_customize->add_setting( 'gifton_button_style', array(
+        'default' => 'rounded',
+        'transport' => 'refresh',
+        'sanitize_callback' => 'sanitize_text_field',
+    ) );
+
+    $wp_customize->add_control( 'gifton_button_style', array(
+        'label'    => __( 'Button Style', 'gifton' ),
+        'section'  => 'gifton_buttons_section',
+        'settings' => 'gifton_button_style',
+        'type'     => 'select',
+        'choices'  => array(
+            'rounded' => 'Rounded Corners',
+            'square'  => 'Square Corners',
+        ),
+    ) );
+
+    // Show/Hide Sections on Homepage
+    $wp_customize->add_section('gifton_homepage_sections', array(
+        'title' => __('Homepage Sections', 'gifton'),
+        'priority' => 60,
+    ));
+
+    $sections = array('hero', 'featured_categories', 'featured_products', 'best_sellers', 'testimonials', 'newsletter', 'blog_posts');
+    foreach ( $sections as $section ) {
+        $wp_customize->add_setting('show_'.$section, array(
+            'default' => true,
+            'sanitize_callback' => 'gifton_sanitize_checkbox',
+        ));
+        $wp_customize->add_control('show_'.$section, array(
+            'label' => ucfirst(str_replace('_', ' ', $section)),
+            'section' => 'gifton_homepage_sections',
+            'type' => 'checkbox',
+        ));
+    }
+
+}
+add_action( 'customize_register', 'gifton_customize_register' );
+
+// Checkbox sanitizer
+function gifton_sanitize_checkbox( $checked ) {
+    return ( ( isset( $checked ) && true == $checked ) ? true : false );
 }
 
-// Apply Customizations via Inline CSS
-function gifton_custom_styles() {
+
+// Output custom styles based on Customizer settings
+function gifton_customizer_css() {
     ?>
     <style type="text/css">
-        .landing-header {
-            background-color: <?php echo esc_attr(get_theme_mod('header_background_color', '#2c3e50')); ?>;
-            color: <?php echo esc_attr(get_theme_mod('text_color', '#ecf0f1')); ?>;
-            font-family: <?php echo esc_attr(get_theme_mod('header_font', 'Arial, sans-serif')); ?>;
-            background-image: url(<?php echo esc_url(get_theme_mod('landing_bg_image', '')); ?>);
-            background-size: cover;
-            background-position: center;
+        :root {
+            --primary-color: <?php echo esc_attr( get_theme_mod( 'primary_color', '#3a86ff' ) ); ?>;
+            --body-font-size: <?php echo esc_attr( get_theme_mod( 'body_font_size', '16px' ) ); ?>;
+        }
+
+        body {
+            font-size: var(--body-font-size);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: '<?php echo esc_attr( get_theme_mod( 'heading_font_family', 'Roboto' ) ); ?>', sans-serif;
+        }
+
+        .button, button, input[type="submit"] {
+            background-color: var(--primary-color);
         }
     </style>
     <?php
 }
-add_action('wp_head', 'gifton_custom_styles');
+add_action('wp_head', 'gifton_customizer_css');
+
+// Register widget area (sidebar)
+function gifton_widgets_init() {
+    register_sidebar( array(
+        'name'          => __( 'Sidebar', 'gifton' ),
+        'id'            => 'sidebar-1',
+        'description'   => __( 'Add widgets here.', 'gifton' ),
+        'before_widget' => '<section id="%1$s" class="widget %2$s">',
+        'after_widget'  => '</section>',
+        'before_title'  => '<h2 class="widget-title">',
+        'after_title'   => '</h2>',
+    ) );
+}
+add_action( 'widgets_init', 'gifton_widgets_init' );
+?>

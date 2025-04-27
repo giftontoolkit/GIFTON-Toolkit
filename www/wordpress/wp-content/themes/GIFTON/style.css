@@ -1,66 +1,80 @@
 /*
 Theme Name: GIFTON
-Author: GIFTON Team
-Description: A custom theme for WordPress.
-Version: 1.0
+Theme URI: https://github.com/giftontoolkit/GIFTON-Toolkit
+Author: Muhammad Muzammyl
+Author URI: https://github.com/muzammyl/
+Description: GIFTON is an elegant and stylish modern eCommerce WordPress theme. It is WooCommerce-ready and fully customizable.
+Version: 1.0.0
 License: GNU General Public License v2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: gifton
+Tags: e-commerce, custom-logo, custom-background, custom-colors, custom-header, custom-menu, featured-images, footer-widgets, theme-options, translation-ready
+
+Requires at least: 5.8
+Tested up to: 6.5
+Requires PHP: 7.4
 */
 
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+/* Basic Reset */
 body {
-    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    line-height: 1.6;
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+    background-color: #ffffff;
 }
 
-.container {
-    width: 90%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    text-align: center;
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
 }
 
-/* Header Section */
-.landing-header {
-    background-color: #2c3e50;
-    color: #ecf0f1;
-    padding: 100px 0;
-}
-
-.landing-header h1 {
-    font-size: 3em;
-}
-
-.cta-button {
-    background-color: #e74c3c;
-    color: white;
-    padding: 10px 20px;
-    text-decoration: none;
-    border-radius: 5px;
-}
-
-.cta-button:hover {
-    background-color: #c0392b;
-}
-
-/* Features Section */
-.features {
-    padding: 50px 0;
-}
-
-.feature-item {
-    background-color: #f7f7f7;
-    margin: 10px 0;
-    padding: 20px;
-    border-radius: 5px;
-}
-
-/* Footer Section */
-.landing-footer {
-    background-color: #34495e;
+/* Buttons */
+button, .button, input[type="submit"] {
+    background-color: #3a86ff;
     color: #fff;
-    padding: 20px 0;
-    font-size: 0.9em;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+button:hover, .button:hover, input[type="submit"]:hover {
+    background-color: #265dbe;
+}
+
+/* Links */
+a {
+    color: #3a86ff;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+/* WooCommerce Products */
+.product-item {
+    background: #fff;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.product-item:hover {
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+.product-link img {
+    width: 100%;
+    border-radius: 20px;
+    margin-bottom: 15px;
+}
+
+.woocommerce-loop-product__title {
+    font-size: 18px;
+    margin: 10px 0;
 }

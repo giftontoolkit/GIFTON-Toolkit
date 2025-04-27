@@ -1,44 +1,26 @@
-<!DOCTYPE html>
-<html <?php language_attributes(); ?>>
-<head>
-    <meta charset="<?php bloginfo('charset'); ?>">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="<?php echo get_stylesheet_uri(); ?>">
-    <title><?php bloginfo('name'); ?> - Landing Page</title>
-    <?php wp_head(); ?>
-</head>
-<body <?php body_class(); ?>>
+<?php
+/**
+ * Main Index Template
+ */
+get_header(); ?>
 
-    <header class="landing-header">
-        <div class="container">
-            <h1>Welcome to GIFTON</h1>
-            <p>Empowering your eCommerce journey with customization.</p>
-            <a href="#features" class="cta-button">Explore Features</a>
-        </div>
-    </header>
+<main class="site-main container">
+    <?php
+    if ( have_posts() ) :
+        while ( have_posts() ) : the_post();
+            get_template_part( 'template-parts/content', get_post_format() );
+            wp_link_pages( array(
+                'before' => '<div class="page-links">' . __( 'Pages:', 'gifton' ),
+                'after'  => '</div>',
+            ) );
+        endwhile;
+        the_posts_navigation();
+    else :
+        get_template_part( 'template-parts/content', 'none' );
+    endif;
+    ?>
+</main>
 
-    <section id="features" class="features">
-        <div class="container">
-            <h2>Why Choose GIFTON?</h2>
-            <div class="feature-item">
-                <h3>Customizable Themes</h3>
-                <p>Build your brand identity with fully customizable designs.</p>
-            </div>
-            <div class="feature-item">
-                <h3>Powerful Plugins</h3>
-                <p>Extend your store functionality with custom plugins.</p>
-            </div>
-            <div class="feature-item">
-                <h3>Optimized for Speed</h3>
-                <p>Fast loading pages to ensure a seamless shopping experience.</p>
-            </div>
-        </div>
-    </section>
-
-    <footer class="landing-footer">
-        <p>&copy; <?php echo date('Y'); ?> <?php gifton_custom_footer_text(); ?></p>
-    </footer>
-
-    <?php wp_footer(); ?>
-</body>
-</html>
+<?php
+get_footer();
+?>
