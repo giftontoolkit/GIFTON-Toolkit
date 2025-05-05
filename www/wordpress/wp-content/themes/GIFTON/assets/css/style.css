@@ -1,88 +1,74 @@
-/* Header */
+/* Header Section */
 .site-header {
-    background: #ffffff;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    padding: 10px 0;
+    background-color: #f9fbff;
+    padding: 20px 0;
+    border-bottom: 1px solid #e2e8f0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    font-family: 'Roboto', sans-serif;
 }
 
-.header-container {
+/* Header Inner Container */
+.header-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     max-width: 1200px;
     margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    padding: 0 20px;
 }
 
-.logo-area img {
-    max-height: 60px;
+/* Site Logo */
+.site-branding img {
+    max-height: 100px;
+    width: auto;
+    height: auto;
 }
 
+/* Site Title (fallback if logo is not uploaded) */
 .site-title {
-    font-size: 24px;
-    font-weight: bold;
-    color: #3a86ff;
+    font-size: 28px;
+    font-weight: 700;
+    color: #2c3e50;
     text-decoration: none;
 }
 
-.main-navigation ul {
+/* Navigation Menu */
+.main-navigation .nav-menu {
     list-style: none;
     margin: 0;
     padding: 0;
     display: flex;
+    gap: 25px;
 }
 
-.main-navigation li {
-    margin: 0 15px;
+.main-navigation .nav-menu li {
+    display: inline-block;
 }
 
-.main-navigation a {
-    color: #333;
+.main-navigation .nav-menu a {
     text-decoration: none;
-    font-weight: 600;
+    font-weight: 500;
+    font-size: 16px;
+    color: #2c3e50;
+    padding: 10px 15px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
 }
 
-.main-navigation a:hover {
-    color: #3a86ff;
+.main-navigation .nav-menu a:hover,
+.main-navigation .nav-menu .current-menu-item a {
+    background-color: #dbeafe;
+    color: #1e3a8a;
 }
 
-.header-icons {
-    position: relative;
-}
-
-.cart-icon {
-    font-size: 20px;
-    color: #333;
-    text-decoration: none;
-    position: relative;
-}
-
-.cart-count {
-    background: #3a86ff;
-    color: #fff;
-    font-size: 12px;
-    border-radius: 50%;
-    padding: 2px 6px;
-    position: absolute;
-    top: -8px;
-    right: -10px;
-}
-
-/* Logo and Site Title */
-.site-branding {
-    display: flex;
-    align-items: center;
-}
-
-.site-branding img {
-    max-width: 200px;
+/* Header Image (if set in customizer) */
+.header-image img {
+    width: 100%;
     height: auto;
-}
-
-.site-branding .site-title {
-    font-size: 28px;
-    font-family: 'Roboto', sans-serif;
-    margin-left: 10px;
-    color: #333;
+    display: block;
+    margin-top: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 

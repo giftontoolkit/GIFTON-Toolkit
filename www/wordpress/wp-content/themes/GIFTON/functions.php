@@ -3,7 +3,6 @@
  * GIFTON Theme Functions
  */
 
-if ( ! function_exists( 'gifton_setup' ) ) :
 function gifton_setup() {
     // Load theme textdomain
     load_theme_textdomain( 'gifton', get_template_directory() . '/languages' );
@@ -31,6 +30,7 @@ function gifton_setup() {
         'width'       => 300,
         'flex-width'  => true,
         'flex-height' => true,
+        'header-text' => array('site-title', 'site-description'),
     ) );
 
     // Custom background support
@@ -39,19 +39,21 @@ function gifton_setup() {
         'default-image' => '',
     ) );
 
-    // Custom header image (optional)
+    // Header image support
     add_theme_support( 'custom-header', array(
-        'width'  => 1920,
-        'height' => 400,
-        'flex-height' => true,
-        'flex-width'  => true,
+        'default-image'      => '',
+        'width'              => 1600,
+        'height'             => 400,
+        'flex-height'        => true,
+        'flex-width'         => true,
+        'uploads'            => true,
     ) );
+
 
     add_theme_support( 'html5', array( 'search-form', 'comment-form', 'comment-list', 'gallery', 'caption', ) );
     add_theme_support( 'customize-selective-refresh-widgets' );
     
 }
-endif;
 add_action( 'after_setup_theme', 'gifton_setup' );
 
 /**
@@ -238,4 +240,5 @@ function gifton_widgets_init() {
     ) );
 }
 add_action( 'widgets_init', 'gifton_widgets_init' );
+
 ?>
