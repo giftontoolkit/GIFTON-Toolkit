@@ -12,6 +12,8 @@
 </head>
 <body <?php body_class(); ?>>
 
+<?php wp_body_open(); ?>
+
 <header class="site-header">
     <div class="container header-inner">
 
