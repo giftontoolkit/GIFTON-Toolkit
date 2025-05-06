@@ -47,6 +47,8 @@ function gifton_setup() {
         'flex-height'        => true,
         'flex-width'         => true,
         'uploads'            => true,
+        'header-text'        => true,
+        'default-text-color' => '000000',
     ) );
 
 
@@ -108,18 +110,24 @@ function gifton_customize_register( $wp_customize ) {
     ) );
 
     $wp_customize->add_setting( 'gifton_font_family', array(
-        'default' => 'Roboto, sans-serif',
+        'default' => 'Roboto',
         'transport' => 'refresh',
         'sanitize_callback' => 'sanitize_text_field',
     ) );
 
     $wp_customize->add_control( 'gifton_font_family', array(
-        'label'    => __( 'Font Family', 'gifton' ),
-        'section'  => 'gifton_typography_section',
-        'settings' => 'gifton_font_family',
-        'type'     => 'text',
-        'description' => 'e.g., Roboto, Arial, sans-serif',
-    ) );
+        'label'   => __( 'Font Family', 'gifton' ),
+        'section' => 'gifton_typography_section',
+        'type'    => 'select',
+        'choices' => array(
+            'Roboto' => 'Roboto',
+            'Open Sans' => 'Open Sans',
+            'Poppins' => 'Poppins',
+            'Lato' => 'Lato',
+            'Montserrat' => 'Montserrat',
+            'Merriweather' => 'Merriweather',
+        ),
+    ));
 
     // === BACKGROUND IMAGE ===
     $wp_customize->add_section( 'background_image', array(
@@ -201,26 +209,44 @@ function gifton_sanitize_checkbox( $checked ) {
     return ( ( isset( $checked ) && true == $checked ) ? true : false );
 }
 
+function gifton_load_google_fonts() {
+    $font = get_theme_mod('gifton_font_family', 'Roboto');
+    $font_query = str_replace(' ', '+', $font);
+    wp_enqueue_style( 'gifton-google-font', 'https://fonts.googleapis.com/css2?family=' . $font_query . ':wght@400;700&display=swap', false );
+}
+add_action( 'wp_enqueue_scripts', 'gifton_load_google_fonts' );
+
 
 // Output custom styles based on Customizer settings
 function gifton_customizer_css() {
+    $primary = get_theme_mod('gifton_primary_color', '#3B82F6');
+    $font = get_theme_mod( 'gifton_font_family', 'Roboto' );
     ?>
     <style type="text/css">
         :root {
-            --primary-color: <?php echo esc_attr( get_theme_mod( 'primary_color', '#3a86ff' ) ); ?>;
-            --body-font-size: <?php echo esc_attr( get_theme_mod( 'body_font_size', '16px' ) ); ?>;
+            --primary-color: <?php echo esc_html( $primary ); ?>;
+        }
+
+        /* Example uses */
+        a,
+        .nav-menu a:hover,
+        .nav-menu .current-menu-item a,
+        .button,
+        button,
+        input[type="submit"] {
+            color: var(--primary-color);
+        }
+
+        .button,
+        button,
+        input[type="submit"],
+        .highlight {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
         }
 
         body {
-            font-size: var(--body-font-size);
-        }
-
-        h1, h2, h3, h4, h5, h6 {
-            font-family: '<?php echo esc_attr( get_theme_mod( 'heading_font_family', 'Roboto' ) ); ?>', sans-serif;
-        }
-
-        .button, button, input[type="submit"] {
-            background-color: var(--primary-color);
+            font-family: '<?php echo esc_html($font); ?>', sans-serif;
         }
     </style>
     <?php
